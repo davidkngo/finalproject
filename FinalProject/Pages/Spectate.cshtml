@@ -1,5 +1,5 @@
 ﻿@page
-@model FinalProject.Pages.SpectateModel
+@model SpectateModel
 @{
     ViewData["Title"] = "Spectate";
 }
@@ -44,7 +44,6 @@
 
 @section Scripts {
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-    <script src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript">
         let transportType = signalR.TransportType.WebSockets;
         let http = new signalR.HttpConnection("https://desolate-tundra-52228.herokuapp.com/hubs/game", { transport: transportType });
