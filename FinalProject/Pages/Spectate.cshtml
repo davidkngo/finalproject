@@ -1,0 +1,104 @@
+﻿@page
+@model FinalProject.Pages.SpectateModel
+@{
+    ViewData["Title"] = "Spectate";
+}
+
+<h2>Spectate</h2>
+
+<div class="spectate-container">
+    <div class="single-container">
+        <div class="game-container">
+
+            <div class="grid-container">
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+            </div>
+            <div class="tile-container">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        let transportType = signalR.TransportType.WebSockets;
+        let http = new signalR.HttpConnection(`http://${document.location.host}/hubs/game`, { transport: transportType });
+        let connection = new signalR.HubConnection(http);
+
+        connection.on("SharedBoard", function (cells) {
+            var tileContainer = $(".single-container > .tile-container");
+            var game = new GameManager(cells, tileContainer);
+        });
+
+
+        function GameManager(cells) {
+            this.cells = cells;
+            this.tileContainer = tileContainer;
+            this.setup();
+
+        }
+
+        GameManager.prototype.setup = function () {
+            this.gameOver = false;
+            this.index = [];
+            var value = 0;
+            for (var i = 0; i < 4; i++) {
+                this.index[i] = [];
+                for (var j = 0; j < 4; j++) {
+                    this.index[i][j] = value;
+                    value++;
+                }
+
+            }
+
+            this.tiles = [];
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 4; j++) {
+                    this.tiles[this.index[i][j]] = document.createElement("div");
+                    this.tiles[this.index[i][j]].className = "tile";
+                    this.tileContainer.appendChild(this.tiles[this.index[i][j]]);
+                    $(this.tiles[this.index[i][j]]).css("background", "green");
+                    if (this.cells[this.index[i][j]].value != 0) {
+                        this.tiles[this.index[i][j]].innerHTML = this.cells[this.index[i][j]].value;
+
+                    }
+                    var x = 10;
+                    var y = 10;
+                    x += 110 * j;
+                    y += 110 * i;
+                    $(this.tiles[this.index[i][j]]).css("left", `${x}px`);
+                    $(this.tiles[this.index[i][j]]).css("top", `${y}px`);
+                }
+
+            }
+
+
+        }
+        connection.start();
+    </script>
+}

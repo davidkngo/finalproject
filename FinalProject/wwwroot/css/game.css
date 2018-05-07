@@ -1,0 +1,101 @@
+﻿:root {
+    --bg: none;
+}
+
+body {
+}
+
+.spectate-container {
+    position: relative;
+    display: block;
+    margin: auto;
+    clear: both;
+}
+
+.single-container {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.duo-container {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.game-container {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+
+.grid-container {
+    display: grid;
+    width: 450px;
+    height: 450px;
+    padding: 10px;
+    margin: auto;
+    grid-gap: 10px;
+    border-radius: 3px;
+    background: black;
+}
+
+.grid-row {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-column-gap: 10px;
+}
+
+.grid-cell {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    background: white;
+}
+
+.tile-container {
+    position: absolute;
+    top: 0;
+    left: 345px;
+    width: 450px;
+    height: 450px;
+    
+}
+
+.tile {
+    position: absolute;
+    z-index: 3;
+    width: 100px;
+    height: 100px;
+    display: block;
+    line-height: 100px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 5px;
+    font-size: 50px;
+    font-family: Consolas;
+    color: darkblue;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.new-tile {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    animation: appear 400ms ease 100ms;
+    animation-fill-mode: both;
+}
