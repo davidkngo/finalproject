@@ -47,11 +47,7 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript">
         let transportType = signalR.TransportType.WebSockets;
-        try {
-            let http = new signalR.HttpConnection(`http://${document.location.host}/hubs/game`, { transport: transportType });
-        } catch (err) {
-            let http = new signalR.HttpConnection("https://desolate-tundra-52228.herokuapp.com/hubs/game", { transport: transportType });
-        }
+        let http = new signalR.HttpConnection("https://desolate-tundra-52228.herokuapp.com/hubs/game", { transport: transportType });
         let connection = new signalR.HubConnection(http);
 
         connection.on("SharedBoard", function (cells) {
