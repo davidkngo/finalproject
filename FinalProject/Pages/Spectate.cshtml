@@ -4,40 +4,35 @@
     ViewData["Title"] = "Spectate";
 }
 
-<h2>Spectate</h2>
+<h1 style="text-align: center">Spectate</h1>
 
-<div class="spectate-container">
-    <div class="single-container">
-        <div class="game-container">
-
-            <div class="grid-container">
-                <div class="grid-row">
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                </div>
-                <div class="grid-row">
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                </div>
-                <div class="grid-row">
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                </div>
-                <div class="grid-row">
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                </div>
-            </div>
-            <div class="tile-container">
-            </div>
+<div class="game-container">
+    <div class="grid-container">
+        <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+        </div>
+        <div class="tile-container">
         </div>
     </div>
 </div>
@@ -46,58 +41,68 @@
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script type="text/javascript">
         let transportType = signalR.TransportType.WebSockets;
-        let http = new signalR.HttpConnection("https://desolate-tundra-52228.herokuapp.com/hubs/game", { transport: transportType });
+        let http = new signalR.HttpConnection(`http://${document.location.host}/hubs/game`, { transport: transportType });
         let connection = new signalR.HubConnection(http);
+        this.player = [];
+        var playerContainer = document.querySelector(".player-container");
+        connection.on("Connection", function (player) {
+            console.log(player);
+        });
+        
 
         connection.on("SharedBoard", function (cells) {
-            var tileContainer = $(".single-container > .tile-container");
-            var game = new GameManager(cells, tileContainer);
+            gameContainer(cells);
         });
 
-
-        function GameManager(cells) {
-            this.cells = cells;
-            this.tileContainer = tileContainer;
-            this.setup();
-
-        }
-
-        GameManager.prototype.setup = function () {
-            this.gameOver = false;
-            this.index = [];
-            var value = 0;
-            for (var i = 0; i < 4; i++) {
-                this.index[i] = [];
-                for (var j = 0; j < 4; j++) {
-                    this.index[i][j] = value;
-                    value++;
-                }
-
-            }
-
-            this.tiles = [];
-            for (var i = 0; i < 4; i++) {
-                for (var j = 0; j < 4; j++) {
-                    this.tiles[this.index[i][j]] = document.createElement("div");
-                    this.tiles[this.index[i][j]].className = "tile";
-                    this.tileContainer.appendChild(this.tiles[this.index[i][j]]);
-                    $(this.tiles[this.index[i][j]]).css("background", "green");
-                    if (this.cells[this.index[i][j]].value != 0) {
-                        this.tiles[this.index[i][j]].innerHTML = this.cells[this.index[i][j]].value;
-
-                    }
-                    var x = 10;
-                    var y = 10;
-                    x += 110 * j;
-                    y += 110 * i;
-                    $(this.tiles[this.index[i][j]]).css("left", `${x}px`);
-                    $(this.tiles[this.index[i][j]]).css("top", `${y}px`);
-                }
-
-            }
-
-
-        }
         connection.start();
+
+        this.tileContainer = document.querySelector(".tile-container");
+        this.values = [];
+        this.tiles = [];
+        this.colorHex = {
+            "v0": "#D2D2C8",
+            "v2": "#FA5252",
+            "v4": "#607BB0",
+            "v8": "#9FE660",
+            "v16": "#E6D960",
+            "v32": "#C77070",
+            "v64": "#4DA6FF",
+            "v128": "#FF0000",
+            "v256": "#967FF9",
+            "v512": "#000080",
+            "v1024": "#f3904f",
+            "v2048": "#8080ff"
+        };
+        function render() {
+            for (var i = 0; i < 4; i++) {
+                this.tiles[i] = [];
+                for (var j = 0; j < 4; j++) {
+                    this.tiles[i][j] = document.createElement("div");
+                    this.tiles[i][j].className = "tile";
+                    console.log(this.tiles[i][j]);
+                    this.tileContainer.appendChild(this.tiles[i][j]);
+                    console.log(this.values[i][j])
+                    var value = this.values[i][j];
+                    $(this.tiles[i][j]).css("background", this.colorHex[`v${value}`]);
+                    if (value != 0) {
+                        this.tiles[i][j].innerHTML = value;
+                    } else {
+                        this.tiles[i][j].innerHTML = "";
+                    }
+                    var x = 110 * j + 10;
+                    var y = 110 * i + 10;
+                    $(this.tiles[i][j]).css("left", `${x}px`);
+                    $(this.tiles[i][j]).css("top", `${y}px`);
+                }
+            }
+        }
+
+        function gameContainer(cells) {
+            this.values = cells;
+            render();
+        }
+
+
+        
     </script>
 }

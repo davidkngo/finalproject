@@ -1,34 +1,75 @@
 ﻿body {
+    background: black;
+    color: white;
 }
 
-.spectate-container {
-    position: relative;
-    display: block;
+
+
+#button {
     margin: auto;
-    clear: both;
+    font: 70px Consolas;
+    color: white;
+    margin-bottom: -15px;
+    border-radius: 5px;
+    transition: 1s;
 }
 
-.single-container {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
+
+
+#undo, #score {
+    border: none;
+    outline: none;
+    width: 100px;
+    height: 70px;
+    text-align: center;
+    border-radius: 5px 5px 0px 0px;
+    background: white;
+    font: 15px Consolas;
+    color: black;
+    float: left;
 }
 
-.duo-container {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
+
+
+#title {
+    float: left;
 }
+
+
+
+#undo {
+    margin-left: 10px;
+}
+
+
+
+#score {
+    margin-left: 50px;
+}
+
+
+
+#undo:hover {
+    cursor: pointer;
+    transition: .5s;
+    background: #D2D2C8;
+}
+
+
+
+
 
 .game-container {
-    position: relative;
-    display: block;
+    display: grid;
+    grid-column-gap: 10px;
     z-index: 1;
+    padding: 10px
 }
 
+
+
 .grid-container {
+    position: relative;
     display: grid;
     width: 450px;
     height: 450px;
@@ -36,8 +77,10 @@
     margin: auto;
     grid-gap: 10px;
     border-radius: 3px;
-    background: black;
+    background: white;
 }
+
+
 
 .grid-row {
     display: grid;
@@ -45,22 +88,27 @@
     grid-column-gap: 10px;
 }
 
+
+
 .grid-cell {
     display: block;
     width: 100px;
     height: 100px;
     border-radius: 5px;
-    background: white;
+    background: #D2D2C8;
 }
+
+
 
 .tile-container {
     position: absolute;
     top: 0;
-    left: 345px;
+    left: 0;
     width: 450px;
     height: 450px;
-    
 }
+
+
 
 .tile {
     position: absolute;
@@ -74,24 +122,70 @@
     border-radius: 5px;
     font-size: 50px;
     font-family: Consolas;
-    color: darkblue;
+    color: white;
 }
 
+
+
+
+
 @keyframes appear {
+
     0% {
         opacity: 0;
         transform: scale(0);
     }
+
     100% {
         opacity: 1;
         transform: scale(1);
     }
 }
 
+
+
 .new-tile {
     position: absolute;
     width: 100px;
     height: 100px;
-    animation: appear 400ms ease 100ms;
+    animation: appear 150ms;
     animation-fill-mode: both;
 }
+.info-container {
+    display: block;
+    margin: auto;
+    padding: 10px;
+}
+
+.info-container > div {
+    display: block;
+    padding: 10px;
+    font-size: 40px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+#group-container {
+    font-size: 50px;
+    text-align: center;
+}
+
+.content-container > h1{
+    text-align: center;
+    color: red;
+}
+.content-container > h2 {
+    text-align: center;
+    color: red;
+}
+.content-container > h3 {
+    text-align: center;
+    color: orange;
+}
+.content-container > p, #fearture {
+    text-align:justify;
+    font-size: 25px;
+    width: 800px;
+    margin: auto;
+}
+

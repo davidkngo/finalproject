@@ -7,31 +7,38 @@ namespace GameDemo.GameObjects
 {
     public class Board
     {
-        public readonly List<Cell> Cells;
-            
+        public int[,] cells;
+
         public Board()
         {
-            Cells = new List<Cell>();
-            OnInitBoard();
+            cells = new int[4, 4];
+            GetCells();
         }
 
-        public void OnInitBoard()
+        public void GetCells()
         {
-            for (int row = 0; row < 4; row++)
+            for (var i = 0; i < 4; i++)
             {
-                for (int col = 0; col < 4; col++)
+                for (var j = 0; j < 4; j++)
                 {
-                    Cells.Add(new Cell(row, col));
+                    cells[i, j] = 0;
                 }
             }
+            AddRandom();            
+            AddRandom();            
+        }
+
+        public void AddRandom()
+        {
             var rnd = new Random();
-            var i = 0;
-            while (i < 4)
+            var i = rnd.Next(0, 4);
+            var j = rnd.Next(0, 4);
+            do
             {
-                int index = rnd.Next(Cells.Count);
-                Cells[index].Value = rnd.Next(4) != 1 ? 2 : 4;
-                i++;
-            }
+                i = rnd.Next(0, 4);
+                j = rnd.Next(0, 4);
+            } while (cells[i, j] != 0);
+            cells[i, j] = rnd.Next(0, 9) < 9 ? 2 : 4;
         }
     }
 }
